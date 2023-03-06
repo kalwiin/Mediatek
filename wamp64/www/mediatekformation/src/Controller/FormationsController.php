@@ -43,7 +43,7 @@ class FormationsController extends AbstractController {
         $categories = $this->categorieRepository->findAll();
         return $this->render(self::RETOURNEFORMATION, [
             'formations' => $formations,
-            'categories' => $categories
+            'categories' => $categories,
         ]);
     }
 
@@ -65,7 +65,7 @@ class FormationsController extends AbstractController {
         $categories = $this->categorieRepository->findAll();
         return $this->render("pages/formations.html.twig", [
             'formations' => $formations,
-            'categories' => $categories
+            'categories' => $categories,
         ]);
     }     
     
@@ -90,7 +90,7 @@ class FormationsController extends AbstractController {
             'formations' => $formations,
             'categories' => $categories,
             'valeur' => $valeur,
-            'table' => $table
+            'table' => $table,
         ]);
     } 
     
@@ -102,7 +102,7 @@ class FormationsController extends AbstractController {
     public function showOne($id): Response{
         $formation = $this->formationRepository->find($id);
          return $this->render(self::RETOURNEFORMATION, [
-            'formation' => $formation
+            'formations' => $formation,
         ]);        
     }   
     
