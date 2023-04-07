@@ -46,19 +46,29 @@ class FormationRepository extends ServiceEntityRepository
      * @param type $table si $champ dans une autre table
      * @return Formation[]
      */
-    public function findAllOrderBy($champ, $ordre, $table=""): array{
-        if($table==""){
+ public function findAllOrderBy($champ, $ordre): array
+    {
             return $this->createQueryBuilder('f')
                     ->orderBy('f.'.$champ, $ordre)
                     ->getQuery()
                     ->getResult();
-        }else{
+         }
+
+    /**
+     * Retourne toutes les formations triÈes sur un champ
+     * @param type $champ
+     * @param type $ordre
+     * @param type $table si $champ dans une autre table
+     * @return Formation[]
+     */
+    public function findAllOrderByT($champ,$ordre,$table=""): array
+   {
             return $this->createQueryBuilder('f')
                     ->join('f.'.$table, 't')
                     ->orderBy('t.'.$champ, $ordre)
                     ->getQuery()
                     ->getResult();            
-        }
+        
     }
 
     /**
@@ -69,27 +79,21 @@ class FormationRepository extends ServiceEntityRepository
      * @param type $table si $champ dans une autre table
      * @return Formation[]
      */
-    public function findByContainValue($champ, $valeur, $table=""): array{
-        if($valeur==""){
+    public function findByContainValue($champ, $valeur): array
+    {
+        if($valeur=="")
+        {
             return $this->findAll();
         }
-        if($table==""){
             return $this->createQueryBuilder('f')
-                    ->where('f.'.$champ.' LIKE :valeur')
-                    ->orderBy('f.publishedAt', 'DESC')
-                    ->setParameter('valeur', '%'.$valeur.'%')
-                    ->getQuery()
-                    ->getResult();            
-        }else{
-            return $this->createQueryBuilder('f')
-                    ->join('f.'.$table, 't')                    
-                    ->where('t.'.$champ.' LIKE :valeur')
-                    ->orderBy('f.publishedAt', 'DESC')
-                    ->setParameter('valeur', '%'.$valeur.'%')
-                    ->getQuery()
-                    ->getResult();                   
-        }       
+                ->where('f.'.$champ.' LIKE :valeur')
+                ->orderBy(' f.publishedAt ','DESC')
+                ->setParameter('valeur', '%'.$valeur.'%')
+                ->getQuery()
+                ->getResult(); 
     }    
+   
+
     
     /**
      * Retourne les n formations les plus r√©centes

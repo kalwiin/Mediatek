@@ -27,6 +27,8 @@ class FormationsController extends AbstractController {
      */
     private $categorieRepository;
     
+    private const RETOURNEFORMATION = "pages/formations.html.twig";
+    
     function __construct(FormationRepository $formationRepository, CategorieRepository $categorieRepository) {
         $this->formationRepository = $formationRepository;
         $this->categorieRepository= $categorieRepository;
@@ -39,7 +41,7 @@ class FormationsController extends AbstractController {
     public function index(): Response{
         $formations = $this->formationRepository->findAll();
         $categories = $this->categorieRepository->findAll();
-        return $this->render("pages/formations.html.twig", [
+        return $this->render(self::RETOURNEFORMATION, [
             'formations' => $formations,
             'categories' => $categories
         ]);
@@ -53,9 +55,15 @@ class FormationsController extends AbstractController {
      * @return Response
      */
     public function sort($champ, $ordre, $table=""): Response{
-        $formations = $this->formationRepository->findAllOrderBy($champ, $ordre, $table);
+                 if($table !="")
+        {
+            $formations = $this->formationRepository->findAllOrderByT($champ, $ordre, $table);
+        }else 
+        {
+            $formations = $this->formationRepository->findAllOrderBy($champ, $ordre);
+        }       
         $categories = $this->categorieRepository->findAll();
-        return $this->render("pages/formations.html.twig", [
+        return $this->render(self::RETOURNEFORMATION, [
             'formations' => $formations,
             'categories' => $categories
         ]);
@@ -70,9 +78,15 @@ class FormationsController extends AbstractController {
      */
     public function findAllContain($champ, Request $request, $table=""): Response{
         $valeur = $request->get("recherche");
-        $formations = $this->formationRepository->findByContainValue($champ, $valeur, $table);
+         if($table !="")
+        {
+            $formations = $this->formationRepository->findByContainValueT($champ, $valeur, $table);
+        }else 
+        {
+            $formations = $this->formationRepository->findByContainValue($champ, $valeur);
+        }
         $categories = $this->categorieRepository->findAll();
-        return $this->render("pages/formations.html.twig", [
+        return $this->render(self::RETOURNEFORMATION, [
             'formations' => $formations,
             'categories' => $categories,
             'valeur' => $valeur,
